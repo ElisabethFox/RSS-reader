@@ -1,10 +1,8 @@
 // Generated using webpack-cli https://github.com/webpack/webpack-cli
-
-const path = require('path');
-const HtmlWebpackPlugin = require('html-webpack-plugin');
+import HtmlWebpackPlugin from 'html-webpack-plugin';
+import path from 'path';
 
 const isProduction = process.env.NODE_ENV == 'production';
-
 
 const config = {
     entry: './src/index.js',
