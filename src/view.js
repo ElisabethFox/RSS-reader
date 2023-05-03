@@ -2,7 +2,7 @@ const renderPosts = (state, div, i18nInstance) => {
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounded-0');
 
-  state.posts.forEach((post) => {
+  state.contentValue.posts.forEach((post) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
@@ -12,7 +12,7 @@ const renderPosts = (state, div, i18nInstance) => {
     a.setAttribute('data-id', post.id);
     a.setAttribute('targer', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
-    a.textContent(post.description);
+    a.textContent = post.title;
 
     const button = document.createElement('button');
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
@@ -20,7 +20,10 @@ const renderPosts = (state, div, i18nInstance) => {
     button.setAttribute('data-id', post.id);
     button.setAttribute('data-bs-toggle', 'modal');
     button.setAttribute('data-bs-target', '#modal');
-    a.textContent = i18nInstance.t('button');
+    button.textContent = i18nInstance.t('button');
+
+    li.append(a, button);
+    ul.append(li);
   });
 
   div.append(ul);
@@ -30,20 +33,19 @@ const renderFeeds = (state, div) => {
   const ul = document.createElement('ul');
   ul.classList.add('list-group', 'border-0', 'rounded-0');
 
-  state.feeds.forEach((feed) => {
+  state.contentValue.feeds.forEach((feed) => {
     const li = document.createElement('li');
     li.classList.add('list-group-item', 'border-0', 'border-end-0');
 
     const h3 = document.createElement('h3');
     h3.classList.add('h6', 'm-0');
-    h3.textContent(feed.title);
+    h3.textContent = feed.title;
 
     const p = document.createElement('p');
     p.classList.add('m-0', 'small', 'text-black-50');
-    p.textContent(feed.description);
+    p.textContent = feed.description;
 
-    li.append(h3);
-    li.append(p);
+    li.append(h3, p);
     ul.append(li);
   });
 
@@ -66,28 +68,22 @@ const createContainer = (type, state, i18nInstance) => {
 
   const divCardBodyTitle = document.createElement('h2');
   divCardBodyTitle.classList.add('card-title', 'h4');
-
-  if (type === 'posts') {
-    divCardBodyTitle.textContent = i18nInstance.t('posts');
-  } else {
-    divCardBodyTitle.textContent = i18nInstance.t('feeds');
-  }
-
+  divCardBodyTitle.textContent = i18nInstance.t(type);
+ 
+  divCardBody.append(divCardBodyTitle);
   divCard.append(divCardBody);
   divCardContainer.append(divCard);
 
-  if (type === 'posts') {
-    renderPosts(state, divCard);
-  } else {
-    renderFeeds(state, divCard);
-  }
+  if (type === 'posts') renderPosts(state, divCard, i18nInstance);
+  if (type === 'feeds') renderFeeds(state, divCard);
+
 };
 
 const handlerSuccessFinish = (elements, state, i18nInstance) => {
   const feedbackField = elements.feedback;
   feedbackField.classList.remove('text-danger');
   feedbackField.classList.add('text-success');
-  feedbackField.textContent = i18nInstance.t('sucsess');
+  // feedbackField.textContent = i18nInstance.t('finished');
 
   const btn = elements.button;
   btn.removeAttribute('disabled');
@@ -96,8 +92,8 @@ const handlerSuccessFinish = (elements, state, i18nInstance) => {
   inputField.removeAttribute('readonly');
   inputField.focus();
 
-  createContainer('posts', state, i18nInstance);
   createContainer('feeds', state, i18nInstance);
+  createContainer('posts', state, i18nInstance);
 };
 
 const handlerFinishWitnError = (elements, error, i18nInstance) => {
@@ -121,7 +117,7 @@ const handlerProcessState = (elements, state, value, i18nInstance) => {
   switch (value) {
     case 'filling':
       break;
-    case 'success':
+    case 'finished':
       handlerSuccessFinish(elements, state, i18nInstance)
       break;
     case 'error':
@@ -142,17 +138,17 @@ export default (elements, state, i18nInstance) => (path, value) => {
       handlerProcessState(elements, state, value, i18nInstance);
       break;
 
-    case 'process.error':
-      handlerFinishWitnError(elements, state.process.error, i18nInstance);
-      break;
+    // case 'process.error':
+    //   handlerFinishWitnError(elements, state.process.error, i18nInstance);
+    //   break;
 
-    case 'contentValue.posts':
-      createContainer('posts', state, i18nInstance);
-      break;
+    // case 'contentValue.posts':
+    //   createContainer('posts', state, i18nInstance);
+    //   break;
 
-    case 'contentValue.feeds':
-      createContainer('feeds', state, i18nInstance);
-      break;
+    // case 'contentValue.feeds':
+    //   createContainer('feeds', state, i18nInstance);
+    //   break;
 
     default:
       break;
