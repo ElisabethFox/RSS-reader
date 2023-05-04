@@ -4,8 +4,7 @@ import { string, setLocale } from 'yup';
 
 import uniqueId from 'lodash/uniqueId.js';
 import i18next from 'i18next';
-// import resources from './locales/index.js';
-import ru from './locales/ru.js';
+import resources from './locales/index.js';
 import render from './view.js';
 import parser from './parser.js';
 
@@ -54,9 +53,7 @@ export default () => {
   i18nInstance.init({
     lng: defaultLanguage,
     debug: true,
-    resources: {
-      ru
-    },
+    resources, 
   }).then(() => {
     const elements = {
       form: document.querySelector('.rss-form'),
@@ -111,8 +108,6 @@ export default () => {
     elements.form.addEventListener('submit', (e) => {
       e.preventDefault();
       const urlList = watchedState.contentValue.feeds.map(({ link }) => link);
-      // const formData = new FormData(elements.form);
-      // const url = formData.get('url');
 
       validate(watchedState.inputValue, urlList)
         .then(() => {
@@ -122,23 +117,18 @@ export default () => {
         })
         .then((response) => {
           const content = response.data.contents;
-          //console.log(content)
           const { feed, posts } = parser(content);
-          // console.log(posts)
-          // const parsedContent = parser(content);
           const feedId = uniqueId();
-          //console.log(feedId)
-
+         
           watchedState.contentValue.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
-          console.log(watchedState.contentValue.feeds)
           createPosts(watchedState, posts, feedId);
-          // console.log(parsedContent.posts)
+
           watchedState.process.processState = 'finished';
         })
         .catch((error) => {
           watchedState.valid = false;
           watchedState.process.error = error.message ?? 'defaultError';
-          // console.log(error.message)
+
           watchedState.process.processState = 'error';
         });
     });

@@ -53,11 +53,11 @@ const renderFeeds = (state, div) => {
 };
 
 const createContainer = (type, state, i18nInstance) => {
-  const divCardContainer = document.createElement('div');
-  if (type === 'posts') {
-    divCardContainer.classList.add('col-md-10', 'col-lg-8', 'order-1', 'mx-auto', 'posts');
+  let divCardContainer;
+  if (type === 'posts') { 
+    divCardContainer = document.querySelector('.posts');
   } else {
-    divCardContainer.classList.add('col-md-10', 'col-lg-4', 'mx-auto', 'order-0', 'order-lg-1', 'feeds');
+    divCardContainer = document.querySelector('.feeds');
   }
 
   const divCard = document.createElement('div');
@@ -83,7 +83,7 @@ const handlerSuccessFinish = (elements, state, i18nInstance) => {
   const feedbackField = elements.feedback;
   feedbackField.classList.remove('text-danger');
   feedbackField.classList.add('text-success');
-  // feedbackField.textContent = i18nInstance.t('finished');
+  feedbackField.textContent = '';
 
   const btn = elements.button;
   btn.removeAttribute('disabled');
@@ -138,9 +138,9 @@ export default (elements, state, i18nInstance) => (path, value) => {
       handlerProcessState(elements, state, value, i18nInstance);
       break;
 
-    // case 'process.error':
-    //   handlerFinishWitnError(elements, state.process.error, i18nInstance);
-    //   break;
+    case 'process.error':
+      handlerFinishWitnError(elements, state.process.error, i18nInstance);
+      break;
 
     // case 'contentValue.posts':
     //   createContainer('posts', state, i18nInstance);
