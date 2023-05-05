@@ -79,6 +79,31 @@ const createContainer = (type, state, i18nInstance) => {
 
 };
 
+const renderModalWindow = (elements, state, postId) => {
+  const body = document.querySelector('body');
+  body.classList.add('modal-open');
+  body.setAttribute('style', 'overflow: hidden; padding-right: 15px;');
+
+  const divBackdrop = document.createElement('div');
+  divBackdrop.classList.add('modal-backdrop', 'fade', 'show');
+  body.append(divBackdrop);
+
+  const divModal = document.querySelector('modal');
+  divModal.classList.add('show');
+  divModal.removeAttribute('style', 'display: none;');
+  divModal.setAttribute('style', 'display: block;');
+  divModal.removeAttribute('aria-hidden', 'true');
+  divModal.setAttribute('aria-modal', 'true');
+
+  const currentPost = state.contentValue.posts.find(({ id }) => id === postId);
+
+  const modalTitle = elements.modal.title;
+  modalTitle.textContent = currentPost.title;
+
+  const modalBody = elements.modal.body;
+  modalBody.textContent = currentPost.description;
+};
+
 const handlerSuccessFinish = (elements, state, i18nInstance) => {
   const feedbackField = elements.feedback;
   feedbackField.classList.remove('text-danger');
@@ -141,6 +166,10 @@ export default (elements, state, i18nInstance) => (path, value) => {
     case 'process.error':
       handlerFinishWitnError(elements, state.process.error, i18nInstance);
       break;
+      
+    case 'uiState.modalId':
+      renderModalWindow(elements, state, value);
+    break;
 
     // case 'contentValue.posts':
     //   createContainer('posts', state, i18nInstance);
