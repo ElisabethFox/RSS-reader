@@ -52,13 +52,8 @@ const renderFeeds = (state, div) => {
   div.append(ul);
 };
 
-const createContainer = (type, state, i18nInstance) => {
-  let divCardContainer;
-  if (type === 'posts') { 
-    divCardContainer = document.querySelector('.posts');
-  } else {
-    divCardContainer = document.querySelector('.feeds');
-  }
+const createContainer = (type, elements, state, i18nInstance) => { 
+  elements[type].textContent = '';
 
   const divCard = document.createElement('div');
   divCard.classList.add('card', 'border-0');
@@ -72,11 +67,10 @@ const createContainer = (type, state, i18nInstance) => {
  
   divCardBody.append(divCardBodyTitle);
   divCard.append(divCardBody);
-  divCardContainer.append(divCard);
+  elements[type].append(divCard);
 
   if (type === 'posts') renderPosts(state, divCard, i18nInstance);
   if (type === 'feeds') renderFeeds(state, divCard);
-
 };
 
 const renderModalWindow = (elements, state, postId) => {
@@ -117,8 +111,8 @@ const handlerSuccessFinish = (elements, state, i18nInstance) => {
   inputField.removeAttribute('readonly');
   inputField.focus();
 
-  createContainer('feeds', state, i18nInstance);
-  createContainer('posts', state, i18nInstance);
+  //createContainer('feeds', state, i18nInstance);
+  //createContainer('posts', state, i18nInstance);
 };
 
 const handlerFinishWitnError = (elements, error, i18nInstance) => {
@@ -143,7 +137,7 @@ const handlerProcessState = (elements, state, value, i18nInstance) => {
     case 'filling':
       break;
     case 'finished':
-      handlerSuccessFinish(elements, state, i18nInstance)
+      handlerSuccessFinish(elements, state, i18nInstance);
       break;
     case 'error':
       handlerFinishWitnError(elements, state.process.error, i18nInstance);
@@ -171,13 +165,13 @@ export default (elements, state, i18nInstance) => (path, value) => {
       renderModalWindow(elements, state, value);
     break;
 
-    // case 'contentValue.posts':
-    //   createContainer('posts', state, i18nInstance);
-    //   break;
+    case 'contentValue.posts':
+      createContainer('posts', elements, state, i18nInstance);
+      break;
 
-    // case 'contentValue.feeds':
-    //   createContainer('feeds', state, i18nInstance);
-    //   break;
+    case 'contentValue.feeds':
+      createContainer('feeds', elements, state, i18nInstance);
+      break;
 
     default:
       break;

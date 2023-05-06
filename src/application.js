@@ -53,15 +53,15 @@ export default () => {
   i18nInstance.init({
     lng: defaultLanguage,
     debug: true,
-    resources, 
+    resources,
   }).then(() => {
     const elements = {
       form: document.querySelector('.rss-form'),
       input: document.querySelector('input[id="url-input"]'),
       button: document.querySelector('button[type="submit"]'),
       feedback: document.querySelector('.feedback'),
-      feedsContainer: document.querySelector('.feeds'),
-      postsContainer: document.querySelector('.posts'),
+      feeds: document.querySelector('.feeds'),
+      posts: document.querySelector('.posts'),
       modal: {
         modalWindow: document.querySelector('.modal'),
         title: document.querySelector('.modal-title'),
@@ -119,10 +119,17 @@ export default () => {
           const content = response.data.contents;
           const { feed, posts } = parser(content);
           const feedId = uniqueId();
+
+          // watchedState.contentValue.feeds = [...watchedState.contentValue.feeds, { ...feed, feedId, link: watchedState.inputValue }];
+          // createPosts(watchedState, posts, feedId);
+          // watchedState.process.processState = 'finished';
+
+          // render(elements, watchedState, i18nInstance);
          
           watchedState.contentValue.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
           createPosts(watchedState, posts, feedId);
 
+          console.log(posts);
           watchedState.process.processState = 'finished';
         })
         .catch((error) => {
