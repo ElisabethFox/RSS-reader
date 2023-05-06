@@ -7,7 +7,8 @@ const renderPosts = (state, div, i18nInstance) => {
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const a = document.createElement('a');
-    a.classList.add('fw-bold');
+    //const aStyle = state.uiState.visitedLinksId.has(post.id) ? ('fw-normal', 'link-secondary') : 'fw-bold';
+    a.classList.add(state.uiState.visitedLinksId.has(post.id) ? ('fw-normal', 'link-secondary') : 'fw-bold');
     a.setAttribute('href', post.link);
     a.setAttribute('data-id', post.id);
     a.setAttribute('targer', '_blank');
@@ -74,20 +75,20 @@ const createContainer = (type, elements, state, i18nInstance) => {
 };
 
 const renderModalWindow = (elements, state, postId) => {
-  const body = document.querySelector('body');
-  body.classList.add('modal-open');
-  body.setAttribute('style', 'overflow: hidden; padding-right: 15px;');
+  // const body = document.querySelector('body');
+  // body.classList.add('modal-open');
+  // body.setAttribute('style', 'overflow: hidden; padding-right: 15px;');
 
-  const divBackdrop = document.createElement('div');
-  divBackdrop.classList.add('modal-backdrop', 'fade', 'show');
-  body.append(divBackdrop);
+  // const divBackdrop = document.createElement('div');
+  // divBackdrop.classList.add('modal-backdrop', 'fade', 'show');
+  // body.append(divBackdrop);
 
-  const divModal = document.querySelector('modal');
-  divModal.classList.add('show');
-  divModal.removeAttribute('style', 'display: none;');
-  divModal.setAttribute('style', 'display: block;');
-  divModal.removeAttribute('aria-hidden', 'true');
-  divModal.setAttribute('aria-modal', 'true');
+  // const divModal = document.querySelector('modal');
+  // divModal.classList.add('show');
+  // divModal.removeAttribute('style', 'display: none;');
+  // divModal.setAttribute('style', 'display: block;');
+  // divModal.removeAttribute('aria-hidden', 'true');
+  // divModal.setAttribute('aria-modal', 'true');
 
   const currentPost = state.contentValue.posts.find(({ id }) => id === postId);
 
@@ -96,9 +97,12 @@ const renderModalWindow = (elements, state, postId) => {
 
   const modalBody = elements.modal.body;
   modalBody.textContent = currentPost.description;
-};
 
-const handlerSuccessFinish = (elements, state, i18nInstance) => {
+  const modalButton = elements.modal.button;
+  modalButton.setAttribute('href', currentPost.link);
+}
+
+const handlerSuccessFinish = (elements) => {
   const feedbackField = elements.feedback;
   feedbackField.classList.remove('text-danger');
   feedbackField.classList.add('text-success');
@@ -137,7 +141,7 @@ const handlerProcessState = (elements, state, value, i18nInstance) => {
     case 'filling':
       break;
     case 'finished':
-      handlerSuccessFinish(elements, state, i18nInstance);
+      handlerSuccessFinish(elements);
       break;
     case 'error':
       handlerFinishWitnError(elements, state.process.error, i18nInstance);

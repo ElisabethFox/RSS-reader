@@ -26,18 +26,18 @@ const getAxiosResponse = (url) => {
 
 const createPosts = (state, newPosts, feedId) => {
   const preparedPosts = newPosts.map((post) => ({ ...post, feedId, id: uniqueId() }));
-  state.contentValue.posts = preparedPosts.concat(state.contentValue.posts);
+  state.contentValue.posts = [...state.contentValue.posts, ...preparedPosts];
 };
 
 const getNewPosts = (state) => {
   const promises = state.contentValue.feeds
-    .map(({ link, id }) => getAxiosResponse(link)
+    .map(({ link, feedId }) => getAxiosResponse(link)
       .then((response) => {
         const { posts } = parser(response.data.contents);
         const addedPosts = state.contentValue.posts.map((post) => post.link);
         const newPosts = posts.filter((post) => !addedPosts.includes(post.link));
         if (newPosts.length > 0) {
-          createPosts(state, newPosts, id);
+          createPosts(state, newPosts, feedId);
         }
         return Promise.resolve();
       }));
@@ -129,7 +129,6 @@ export default () => {
           watchedState.contentValue.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
           createPosts(watchedState, posts, feedId);
 
-          console.log(posts);
           watchedState.process.processState = 'finished';
         })
         .catch((error) => {
@@ -140,10 +139,15 @@ export default () => {
         });
     });
 
-    elements.postsContainer.addEventListener('click', (e) => {
-      console.log(e.relatedTarget)
-      //const postId = e.relatedTarget.getAttribute('data-id');
+    elements.posts.addEventListener('click', (e) => {
+      const currentPostId = e.target.dataset.id;
+      watchedState.uiState.visitedLinksId.add(currentPostId);
+    })
 
+    elements.modal.modalWindow.addEventListener('show.bs.modal', (e) => {
+      const currentPostId = e.relatedTarget.dataset.id;
+      watchedState.uiState.visitedLinksId.add(currentPostId);
+      watchedState.uiState.modalId = currentPostId;
     })
   });
 };
