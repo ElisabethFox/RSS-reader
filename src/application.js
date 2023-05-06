@@ -132,5 +132,11 @@ export default () => {
           watchedState.process.processState = 'error';
         });
     });
+
+    elements.postsContainer.addEventListener('click', (e) => {
+      console.log(e.relatedTarget)
+      //const postId = e.relatedTarget.getAttribute('data-id');
+
+    })
   });
 };
