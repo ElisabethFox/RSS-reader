@@ -8,7 +8,7 @@ export default {
       invalidUrl: 'The link must be a valid URL',
       doubleRss: 'RSS already exists',
       emptyField: 'Must not be empty',
-      unvalidRssResourse: 'Resource does not contain valid RSS',
+      parseError: 'Resource does not contain valid RSS',
       networkError: 'Network error',
     },
   }

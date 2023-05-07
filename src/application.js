@@ -72,10 +72,10 @@ export default () => {
 
     setLocale({
       mixed: {
-        notOneOf: 'errors.doubleRss',
+        notOneOf: 'doubleRss',
       },
       string: {
-        url: 'errors.invalidUrl',
+        url: 'invalidUrl',
       },
     });
 
@@ -102,7 +102,9 @@ export default () => {
     elements.form.addEventListener('input', (e) => {
       e.preventDefault();
       watchedState.process.processState = 'filling';
+      //console.log(e.target.value)
       watchedState.inputValue = e.target.value;
+      //console.log(watchedState.inputValue)
     });
 
     elements.form.addEventListener('submit', (e) => {
@@ -113,41 +115,42 @@ export default () => {
         .then(() => {
           watchedState.valid = true;
           watchedState.process.processState = 'sending';
+          // e.target.value = '';
           return getAxiosResponse(watchedState.inputValue);
         })
         .then((response) => {
           const content = response.data.contents;
-          const { feed, posts } = parser(content);
+          const { feed, posts } = parser(content, i18nInstance, elements);
           const feedId = uniqueId();
+          //console.log(1)
 
-          // watchedState.contentValue.feeds = [...watchedState.contentValue.feeds, { ...feed, feedId, link: watchedState.inputValue }];
-          // createPosts(watchedState, posts, feedId);
-          // watchedState.process.processState = 'finished';
-
-          // render(elements, watchedState, i18nInstance);
-         
           watchedState.contentValue.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
           createPosts(watchedState, posts, feedId);
 
+          //e.target.value = '';
+          // watchedState.inputValue = ''
           watchedState.process.processState = 'finished';
         })
         .catch((error) => {
-          watchedState.valid = false;
+          // watchedState.valid = false;
           watchedState.process.error = error.message ?? 'defaultError';
-
+          console.log(error)
           watchedState.process.processState = 'error';
         });
     });
 
-    elements.posts.addEventListener('click', (e) => {
-      const currentPostId = e.target.dataset.id;
-      watchedState.uiState.visitedLinksId.add(currentPostId);
-    })
-
     elements.modal.modalWindow.addEventListener('show.bs.modal', (e) => {
-      const currentPostId = e.relatedTarget.dataset.id;
+      const currentPostId = e.relatedTarget.getAttribute('data-id');
       watchedState.uiState.visitedLinksId.add(currentPostId);
       watchedState.uiState.modalId = currentPostId;
+    })
+
+    elements.posts.addEventListener('click', (e) => {
+      const currentPostId = e.target.dataset.id;
+
+      if(currentPostId) {
+        watchedState.uiState.visitedLinksId.add(currentPostId);
+      }
     })
   });
 };

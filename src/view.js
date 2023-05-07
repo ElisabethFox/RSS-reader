@@ -7,13 +7,33 @@ const renderPosts = (state, div, i18nInstance) => {
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const a = document.createElement('a');
-    //const aStyle = state.uiState.visitedLinksId.has(post.id) ? ('fw-normal', 'link-secondary') : 'fw-bold';
+    // a.classList.add('fw-bold', state.uiState.visitedLinksId.has(post.id) ? 'link-secondary' : 'fw-normal');
+    // console.log(state.uiState.visitedLinksId.has(post.id))
     a.classList.add(state.uiState.visitedLinksId.has(post.id) ? ('fw-normal', 'link-secondary') : 'fw-bold');
+    // if(state.uiState.visitedLinksId.has(post.id)) {
+    //   a.classList.add('fw-normal', 'link-secondary')
+    // } else {
+    //   a.classList.add('fw-bold')
+    // }
+    // console.log(state.uiState.visitedLinksId)
+    // if (state.uiState.visitedLinksId.has(post.id)) {
+    //   a.classList.add('link-secondary');
+    //   a.classList.remove('fw-bold');
+    // } else {
+    //   a.classList.add('fw-bold');
+    // }
+    
+    // a.classList.add('fw-normal');
+
     a.setAttribute('href', post.link);
     a.setAttribute('data-id', post.id);
-    a.setAttribute('targer', '_blank');
+    a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
     a.textContent = post.title;
+
+    a.addEventListener('click', () => {
+      state.uiState.visitedLinksId.add(post.id);  
+    })
 
     const button = document.createElement('button');
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
@@ -75,65 +95,37 @@ const createContainer = (type, elements, state, i18nInstance) => {
 };
 
 const renderModalWindow = (elements, state, postId) => {
-  // const body = document.querySelector('body');
-  // body.classList.add('modal-open');
-  // body.setAttribute('style', 'overflow: hidden; padding-right: 15px;');
-
-  // const divBackdrop = document.createElement('div');
-  // divBackdrop.classList.add('modal-backdrop', 'fade', 'show');
-  // body.append(divBackdrop);
-
-  // const divModal = document.querySelector('modal');
-  // divModal.classList.add('show');
-  // divModal.removeAttribute('style', 'display: none;');
-  // divModal.setAttribute('style', 'display: block;');
-  // divModal.removeAttribute('aria-hidden', 'true');
-  // divModal.setAttribute('aria-modal', 'true');
-
   const currentPost = state.contentValue.posts.find(({ id }) => id === postId);
 
-  const modalTitle = elements.modal.title;
-  modalTitle.textContent = currentPost.title;
+  elements.modal.title.textContent = currentPost.title;
+  elements.modal.body.textContent = currentPost.description;
+  elements.modal.button.setAttribute('href', currentPost.link);
+};
 
-  const modalBody = elements.modal.body;
-  modalBody.textContent = currentPost.description;
+const handlerSuccessFinish = (elements, i18nInstance) => {
+  elements.feedback.classList.remove('text-danger');
+  elements.feedback.classList.add('text-success');
+  elements.feedback.textContent = i18nInstance.t('sucсess');
 
-  const modalButton = elements.modal.button;
-  modalButton.setAttribute('href', currentPost.link);
-}
+  elements.button.removeAttribute('disabled');
 
-const handlerSuccessFinish = (elements) => {
-  const feedbackField = elements.feedback;
-  feedbackField.classList.remove('text-danger');
-  feedbackField.classList.add('text-success');
-  feedbackField.textContent = '';
-
-  const btn = elements.button;
-  btn.removeAttribute('disabled');
-
-  const inputField = elements.input;
-  inputField.removeAttribute('readonly');
-  inputField.focus();
-
-  //createContainer('feeds', state, i18nInstance);
-  //createContainer('posts', state, i18nInstance);
+  elements.input.removeAttribute('readonly');
+  elements.input.focus();
+  elements.form.reset();
+  elements.input.classList.remove('is-invalid');
 };
 
 const handlerFinishWitnError = (elements, error, i18nInstance) => {
-  const feedbackField = elements.feedback;
-  const btn = elements.button;
-  const inputField = elements.input;
-  
-  feedbackField.classList.remove('text-success');
-  feedbackField.classList.add('text-danger');
-  feedbackField.textContent = i18nInstance.t(`${error.replace(/ /g, '')}`);
+  elements.feedback.classList.remove('text-success');
+  elements.feedback.classList.add('text-danger');
+  elements.feedback.textContent = i18nInstance.t(`errors.${error.replace(/ /g, '')}`);
 
   if (error !== 'Network Error') {
     elements.input.classList.add('is-invalid');
   }
 
-  btn.disabled = false;
-  inputField.disabled = false;
+  elements.button.disabled = false;
+  elements.input.disabled = false;
 };
 
 const handlerProcessState = (elements, state, value, i18nInstance) => {
@@ -141,7 +133,7 @@ const handlerProcessState = (elements, state, value, i18nInstance) => {
     case 'filling':
       break;
     case 'finished':
-      handlerSuccessFinish(elements);
+      handlerSuccessFinish(elements, i18nInstance);
       break;
     case 'error':
       handlerFinishWitnError(elements, state.process.error, i18nInstance);
