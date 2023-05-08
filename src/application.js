@@ -126,7 +126,7 @@ export default () => {
           watchedState.process.processState = 'finished';
         })
         .catch((error) => {
-          // watchedState.valid = false;
+          watchedState.valid = false;
           watchedState.process.error = error.message ?? 'defaultError';
           console.log(error)
           watchedState.process.processState = 'error';
