@@ -3,8 +3,7 @@
 
 **RSS-reader** is a service for aggregating RSS feeds that makes it easy to read a variety of sources, such as blogs. It allows you to add an unlimited number of RSS feeds, updates them yourself and adds new entries to the total stream.
 
-![RSS-img](./img/loid-forger-read.gif)
-
+![RSS-img](./img/banner.png)
 **How to use it?** Paste the rss link in the input box. Press the "Add" button. The RSS feed will appear on the screen and you will be able to read all posts. You can open each post to read it in full at the source, or you can click the preview button to read the article description. You can select multiple feeds at once by adding new links to other sources. The posts are updated automatically in real time. <code>[Let's try it!](https://frontend-project-11-2dudwrwis-lisagontsova-gmailcom.vercel.app/)</code> 
 
 ![RSS-img](./img/demo.gif)
