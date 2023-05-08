@@ -140,7 +140,6 @@ export default () => {
 
     elements.posts.addEventListener('click', (e) => {
       const currentPostId = e.target.dataset.id;
-
       if (currentPostId) {
         watchedState.uiState.visitedLinksId.add(currentPostId);
       }
