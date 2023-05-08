@@ -69,8 +69,13 @@ const createContainer = (type, elements, state, i18nInstance) => {
   divCard.append(divCardBody);
   elements[type].append(divCard);
 
-  if (type === 'posts') renderPosts(state, divCard, i18nInstance);
-  if (type === 'feeds') renderFeeds(state, divCard);
+  if (type === 'posts') { 
+    renderPosts(state, divCard, i18nInstance);
+  }
+
+  if (type === 'feeds') {
+    renderFeeds(state, divCard);
+  }
 };
 
 const renderModalWindow = (elements, state, postId) => {
