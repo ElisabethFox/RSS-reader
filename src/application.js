@@ -26,7 +26,7 @@ const getAxiosResponse = (url) => {
 
 const createPosts = (state, newPosts, feedId) => {
   const preparedPosts = newPosts.map((post) => ({ ...post, feedId, id: uniqueId() }));
-  state.content.posts = [...state.contentValue.posts, ...preparedPosts];
+  state.content.posts = [...state.content.posts, ...preparedPosts];
 };
 
 const getNewPosts = (state) => {
@@ -116,8 +116,8 @@ export default () => {
           return getAxiosResponse(watchedState.inputValue);
         })
         .then((response) => {
-          const content = response.data.contents;
-          const { feed, posts } = parser(content, i18nInstance, elements);
+          const data = response.data.contents;
+          const { feed, posts } = parser(data, i18nInstance, elements);
           const feedId = uniqueId();
 
           watchedState.content.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
