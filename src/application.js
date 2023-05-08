@@ -113,7 +113,6 @@ export default () => {
         .then(() => {
           watchedState.valid = true;
           watchedState.process.processState = 'sending';
-          // e.target.value = '';
           return getAxiosResponse(watchedState.inputValue);
         })
         .then((response) => {
