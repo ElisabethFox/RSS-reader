@@ -30,11 +30,11 @@ const createPosts = (state, newPosts, feedId) => {
 };
 
 const getNewPosts = (state) => {
-  const promises = state.contentValue.feeds
+  const promises = state.content.feeds
     .map(({ link, feedId }) => getAxiosResponse(link)
       .then((response) => {
         const { posts } = parser(response.data.contents);
-        const addedPosts = state.contentValue.posts.map((post) => post.link);
+        const addedPosts = state.content.posts.map((post) => post.link);
         const newPosts = posts.filter((post) => !addedPosts.includes(post.link));
         if (newPosts.length > 0) {
           createPosts(state, newPosts, feedId);
