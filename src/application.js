@@ -128,7 +128,6 @@ export default () => {
         .catch((error) => {
           watchedState.valid = false;
           watchedState.process.error = error.message ?? 'defaultError';
-          console.log(error)
           watchedState.process.processState = 'error';
         });
     });
@@ -142,7 +141,7 @@ export default () => {
     elements.posts.addEventListener('click', (e) => {
       const currentPostId = e.target.dataset.id;
 
-      if(currentPostId) {
+      if (currentPostId) {
         watchedState.uiState.visitedLinksId.add(currentPostId);
       }
     })
