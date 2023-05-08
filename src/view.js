@@ -7,7 +7,7 @@ const renderPosts = (state, div, i18nInstance) => {
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const a = document.createElement('a');
-    a.classList.add(state.uiState.visitedLinksId.has(post.id) ? ('fw-normal', 'link-secondary') : 'fw-bold');
+    a.classList.add(state.uiState.visitedLinksIds.has(post.id) ? ('fw-normal', 'link-secondary') : 'fw-bold');
     a.setAttribute('href', post.link);
     a.setAttribute('data-id', post.id);
     a.setAttribute('target', '_blank');
@@ -146,7 +146,7 @@ export default (elements, state, i18nInstance) => (path, value) => {
       renderModalWindow(elements, state, value);
     break;
     
-    case 'uiState.visitedLinksId':
+    case 'uiState.visitedLinksIds':
       createContainer('posts', elements, state, i18nInstance);
     break;
 

@@ -91,7 +91,7 @@ export default () => {
         feeds: [],
       },
       uiState: {
-        visitedLinksId: new Set(),
+        visitedLinksIds: new Set(),
         modalId: '',
       },
     };
@@ -134,14 +134,14 @@ export default () => {
 
     elements.modal.modalWindow.addEventListener('show.bs.modal', (e) => {
       const currentPostId = e.relatedTarget.getAttribute('data-id');
-      watchedState.uiState.visitedLinksId.add(currentPostId);
+      watchedState.uiState.visitedLinksIds.add(currentPostId);
       watchedState.uiState.modalId = currentPostId;
     })
 
     elements.posts.addEventListener('click', (e) => {
       const currentPostId = e.target.dataset.id;
       if (currentPostId) {
-        watchedState.uiState.visitedLinksId.add(currentPostId);
+        watchedState.uiState.visitedLinksIds.add(currentPostId);
       }
     })
   });
