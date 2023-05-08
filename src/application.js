@@ -122,13 +122,10 @@ export default () => {
           const content = response.data.contents;
           const { feed, posts } = parser(content, i18nInstance, elements);
           const feedId = uniqueId();
-          //console.log(1)
 
           watchedState.contentValue.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
           createPosts(watchedState, posts, feedId);
 
-          //e.target.value = '';
-          // watchedState.inputValue = ''
           watchedState.process.processState = 'finished';
         })
         .catch((error) => {

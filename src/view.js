@@ -7,33 +7,12 @@ const renderPosts = (state, div, i18nInstance) => {
     li.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'align-items-start', 'border-0', 'border-end-0');
 
     const a = document.createElement('a');
-    // a.classList.add('fw-bold', state.uiState.visitedLinksId.has(post.id) ? 'link-secondary' : 'fw-normal');
-    // console.log(state.uiState.visitedLinksId.has(post.id))
     a.classList.add(state.uiState.visitedLinksId.has(post.id) ? ('fw-normal', 'link-secondary') : 'fw-bold');
-    // if(state.uiState.visitedLinksId.has(post.id)) {
-    //   a.classList.add('fw-normal', 'link-secondary')
-    // } else {
-    //   a.classList.add('fw-bold')
-    // }
-    // console.log(state.uiState.visitedLinksId)
-    // if (state.uiState.visitedLinksId.has(post.id)) {
-    //   a.classList.add('link-secondary');
-    //   a.classList.remove('fw-bold');
-    // } else {
-    //   a.classList.add('fw-bold');
-    // }
-    
-    // a.classList.add('fw-normal');
-
     a.setAttribute('href', post.link);
     a.setAttribute('data-id', post.id);
     a.setAttribute('target', '_blank');
     a.setAttribute('rel', 'noopener noreferrer');
     a.textContent = post.title;
-
-    a.addEventListener('click', () => {
-      state.uiState.visitedLinksId.add(post.id);  
-    })
 
     const button = document.createElement('button');
     button.classList.add('btn', 'btn-outline-primary', 'btn-sm');
@@ -110,9 +89,10 @@ const handlerSuccessFinish = (elements, i18nInstance) => {
   elements.button.removeAttribute('disabled');
 
   elements.input.removeAttribute('readonly');
-  elements.input.focus();
-  elements.form.reset();
   elements.input.classList.remove('is-invalid');
+  elements.input.focus();
+
+  elements.form.reset();
 };
 
 const handlerFinishWitnError = (elements, error, i18nInstance) => {
@@ -120,9 +100,7 @@ const handlerFinishWitnError = (elements, error, i18nInstance) => {
   elements.feedback.classList.add('text-danger');
   elements.feedback.textContent = i18nInstance.t(`errors.${error.replace(/ /g, '')}`);
 
-  if (error !== 'Network Error') {
-    elements.input.classList.add('is-invalid');
-  }
+  if (error !== 'Network Error') elements.input.classList.add('is-invalid');
 
   elements.button.disabled = false;
   elements.input.disabled = false;
@@ -159,6 +137,10 @@ export default (elements, state, i18nInstance) => (path, value) => {
       
     case 'uiState.modalId':
       renderModalWindow(elements, state, value);
+    break;
+    
+    case 'uiState.visitedLinksId':
+      createContainer('posts', elements, state, i18nInstance);
     break;
 
     case 'contentValue.posts':
