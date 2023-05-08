@@ -26,7 +26,7 @@ const getAxiosResponse = (url) => {
 
 const createPosts = (state, newPosts, feedId) => {
   const preparedPosts = newPosts.map((post) => ({ ...post, feedId, id: uniqueId() }));
-  state.contentValue.posts = [...state.contentValue.posts, ...preparedPosts];
+  state.content.posts = [...state.contentValue.posts, ...preparedPosts];
 };
 
 const getNewPosts = (state) => {
@@ -86,7 +86,7 @@ export default () => {
         processState: 'filling',
         error: '',
       },
-      contentValue: {
+      content: {
         posts: [],
         feeds: [],
       },
@@ -109,7 +109,7 @@ export default () => {
 
     elements.form.addEventListener('submit', (e) => {
       e.preventDefault();
-      const urlList = watchedState.contentValue.feeds.map(({ link }) => link);
+      const urlList = watchedState.content.feeds.map(({ link }) => link);
 
       validate(watchedState.inputValue, urlList)
         .then(() => {
@@ -123,7 +123,7 @@ export default () => {
           const { feed, posts } = parser(content, i18nInstance, elements);
           const feedId = uniqueId();
 
-          watchedState.contentValue.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
+          watchedState.content.feeds.push({ ...feed, feedId, link: watchedState.inputValue });
           createPosts(watchedState, posts, feedId);
 
           watchedState.process.processState = 'finished';
