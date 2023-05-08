@@ -79,7 +79,7 @@ const createContainer = (type, elements, state, i18nInstance) => {
 };
 
 const renderModalWindow = (elements, state, postId) => {
-  const currentPost = state.contentValue.posts.find(({ id }) => id === postId);
+  const currentPost = state.content.posts.find(({ id }) => id === postId);
 
   elements.modal.title.textContent = currentPost.title;
   elements.modal.body.textContent = currentPost.description;
@@ -150,11 +150,11 @@ export default (elements, state, i18nInstance) => (path, value) => {
       createContainer('posts', elements, state, i18nInstance);
     break;
 
-    case 'contentValue.posts':
+    case 'content.posts':
       createContainer('posts', elements, state, i18nInstance);
       break;
 
-    case 'contentValue.feeds':
+    case 'content.feeds':
       createContainer('feeds', elements, state, i18nInstance);
       break;
 
