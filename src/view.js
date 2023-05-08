@@ -71,11 +71,11 @@ const createContainer = (type, elements, state, i18nInstance) => {
 
   if (type === 'posts') { 
     renderPosts(state, divCard, i18nInstance);
-  }
+  };
 
   if (type === 'feeds') {
     renderFeeds(state, divCard);
-  }
+  };
 };
 
 const renderModalWindow = (elements, state, postId) => {
@@ -105,7 +105,9 @@ const handlerFinishWitnError = (elements, error, i18nInstance) => {
   elements.feedback.classList.add('text-danger');
   elements.feedback.textContent = i18nInstance.t(`errors.${error.replace(/ /g, '')}`);
 
-  if (error !== 'Network Error') elements.input.classList.add('is-invalid');
+  if (error !== 'Network Error') {
+    elements.input.classList.add('is-invalid');
+  };
 
   elements.button.disabled = false;
   elements.input.disabled = false;
