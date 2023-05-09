@@ -105,7 +105,7 @@ const handlerSuccessFinish = (elements, i18nInstance) => {
   elements.form.reset();
 };
 
-const handlerFinishWitnError = (elements, error, i18nInstance) => {
+const handlerFinishWithError = (elements, error, i18nInstance) => {
   elements.feedback.classList.remove('text-success');
   elements.feedback.classList.add('text-danger');
   elements.feedback.textContent = i18nInstance.t(`errors.${error.replace(/ /g, '')}`);
@@ -126,7 +126,7 @@ const handlerProcessState = (elements, state, value, i18nInstance) => {
       handlerSuccessFinish(elements, i18nInstance);
       break;
     case 'error':
-      handlerFinishWitnError(elements, state.process.error, i18nInstance);
+      handlerFinishWithError(elements, state.process.error, i18nInstance);
       break;
     case 'sending':
       elements.button.getAttribute('disabled');
@@ -144,7 +144,7 @@ export default (elements, state, i18nInstance) => (path, value) => {
       break;
 
     case 'process.error':
-      handlerFinishWitnError(elements, state.process.error, i18nInstance);
+      handlerFinishWithError(elements, state.process.error, i18nInstance);
       break;
       
     case 'uiState.modalId':
