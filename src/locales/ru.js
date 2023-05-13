@@ -9,7 +9,7 @@ export default {
       doubleRss: 'RSS уже существует',
       emptyField: 'Поле не должно быть пустым',
       parseError: 'Ресурс не содержит валидный RSS',
-      networkError: 'Ошибка сети',
+      NetworkError: 'Ошибка сети',
     },
   }
 };
