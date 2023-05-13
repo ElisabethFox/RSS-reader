@@ -11,5 +11,5 @@ export default {
       parseError: 'Ресурс не содержит валидный RSS',
       NetworkError: 'Ошибка сети',
     },
-  }
+  },
 };

@@ -1,5 +1,5 @@
 import HtmlWebpackPlugin from 'html-webpack-plugin';
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import MiniCssExtractPlugin from 'mini-css-extract-plugin';
 
 export default {
   mode: process.env.NODE_ENV || 'development',
@@ -10,10 +10,10 @@ export default {
   },
   module: {
     rules: [
-        {
-            test: /\.(js|jsx)$/i,
-            loader: 'babel-loader',
-        },
+      {
+        test: /\.(js|jsx)$/i,
+        loader: 'babel-loader',
+      },
       {
         test: /\.css$/,
         use: ['style-loader', 'css-loader', 'postcss-loader'],

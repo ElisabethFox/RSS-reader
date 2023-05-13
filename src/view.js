@@ -56,7 +56,7 @@ const renderFeeds = (state, div) => {
   div.append(ul);
 };
 
-const createContainer = (type, elements, state, i18nInstance) => { 
+const createContainer = (type, elements, state, i18nInstance) => {
   elements[type].textContent = '';
 
   const divCard = document.createElement('div');
@@ -68,18 +68,18 @@ const createContainer = (type, elements, state, i18nInstance) => {
   const divCardBodyTitle = document.createElement('h2');
   divCardBodyTitle.classList.add('card-title', 'h4');
   divCardBodyTitle.textContent = i18nInstance.t(type);
- 
+
   divCardBody.append(divCardBodyTitle);
   divCard.append(divCardBody);
   elements[type].append(divCard);
 
-  if (type === 'posts') { 
+  if (type === 'posts') {
     renderPosts(state, divCard, i18nInstance);
-  };
+  }
 
   if (type === 'feeds') {
     renderFeeds(state, divCard);
-  };
+  }
 };
 
 const renderModalWindow = (elements, state, postId) => {
@@ -112,7 +112,7 @@ const handlerFinishWithError = (elements, error, i18nInstance) => {
 
   if (error !== 'Network Error') {
     elements.input.classList.add('is-invalid');
-  };
+  }
 
   elements.button.disabled = false;
   elements.input.disabled = false;
@@ -146,14 +146,14 @@ export default (elements, state, i18nInstance) => (path, value) => {
     case 'process.error':
       handlerFinishWithError(elements, state.process.error, i18nInstance);
       break;
-      
+
     case 'uiState.modalId':
       renderModalWindow(elements, state, value);
-    break;
-    
+      break;
+
     case 'uiState.visitedLinksIds':
       createContainer('posts', elements, state, i18nInstance);
-    break;
+      break;
 
     case 'content.posts':
       createContainer('posts', elements, state, i18nInstance);

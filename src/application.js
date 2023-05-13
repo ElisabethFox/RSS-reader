@@ -12,7 +12,8 @@ const defaultLanguage = 'ru';
 const timeout = 5000;
 
 const validate = (url, urlList) => {
-  const schema = string().trim().required().url().notOneOf(urlList);
+  const schema = string().trim().required().url()
+    .notOneOf(urlList);
   return schema.validate(url);
 };
 
@@ -136,13 +137,13 @@ export default () => {
       const currentPostId = e.relatedTarget.getAttribute('data-id');
       watchedState.uiState.visitedLinksIds.add(currentPostId);
       watchedState.uiState.modalId = currentPostId;
-    })
+    });
 
     elements.posts.addEventListener('click', (e) => {
       const currentPostId = e.target.dataset.id;
       if (currentPostId) {
         watchedState.uiState.visitedLinksIds.add(currentPostId);
       }
-    })
+    });
   });
 };

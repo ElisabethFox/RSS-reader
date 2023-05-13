@@ -11,5 +11,5 @@ export default {
       parseError: 'Resource does not contain valid RSS',
       networkError: 'Network error',
     },
-  }
+  },
 };
