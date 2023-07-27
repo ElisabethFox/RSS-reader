@@ -129,8 +129,8 @@ const handlerProcessState = (elements, state, value, i18nInstance) => {
       handlerFinishWithError(elements, state.process.error, i18nInstance);
       break;
     case 'sending':
-      elements.button.getAttribute('disabled');
-      elements.input.getAttribute('readonly');
+      elements.button.setAttribute('disabled');
+      elements.input.setAttribute('readonly');
       break;
     default:
       throw new Error(`Unknown process state: ${value}`);
